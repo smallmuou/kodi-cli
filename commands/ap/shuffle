@@ -93,8 +93,8 @@ if [ $# -eq 1 ];then
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
     echo $resp|jshon -e result
 else
-    body=$(json "Player.GetProperties" "\"playerid\":0, \"properties\":[\"shuffle\"]")
+    body=$(json "Player.GetProperties" "\"playerid\":0, \"properties\":[\"shuffled\"]")
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
-    echo $resp|jshon -e result|jshon -e shuffle
+    echo $resp|jshon -e result|jshon -e shuffled
 fi
 
