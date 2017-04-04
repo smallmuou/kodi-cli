@@ -23,11 +23,11 @@
 set -e
 
 spushd() {
-     pushd "$1" 2>&1 > /dev/null
+     pushd "$1" 2>&1> /dev/null
 }
 
 spopd() {
-     popd 2>&1 > /dev/null
+     popd 2>&1> /dev/null
 }
 
 info() {
@@ -54,60 +54,47 @@ current_dir() {
 usage() {
 cat << EOF
 
-USAGE: $0 [-h] [username:password@]host:port
+USAGE: $(basename $0) [-h] [off/one/all]
 
 DESCRIPTION:
+
+Set the repeat mode of the player
 
 OPTIONS:
     -h                Show this help message and exit
 
 EOF
-    exit 1
+exit 0
 }
 
 while getopts 'h' arg; do
     case $arg in
         h)
-            usage
-            exit;;
+            usage;;
         ?)
-            usage
-            exit;;
+            usage;;
     esac
 done
 
 shift $(($OPTIND - 1))
 
-spushd `current_dir`
+host=`cat /etc/kodirc`
 
-EXE=`/bin/ls -l|sed '1d'|sed '/install.sh/d'|sed '/^d/d'|awk '{print $NF}'|xargs grep -l "EXECUTE-FILE"|sed '2,$d'`
-PKG="$EXE-cli"
-INSTALL_DIR="${INSTALL_DIR}"
-
-install(){
-    [ ! -d "${INSTALL_DIR}" ] && mkdir -p ${INSTALL_DIR}
-    rm -rf ${INSTALL_DIR}/*
-    cp -rf * ${INSTALL_DIR}
-    chmod -R 755 ${INSTALL_DIR}/commands 2>/dev/null
-    chmod 755 ${INSTALL_DIR}/$EXE 2>/dev/null
-    sudo ln -sf ${INSTALL_DIR}/$EXE /usr/local/bin/$EXE
+# method params
+json(){
+    method=$1
+    params=""
+    [ $# == 2 ] && params=$2
+    echo "{\"jsonrpc\":\"2.0\", \"method\":\"$1\", \"params\":{$params}, \"id\":1}"
 }
 
-[ $# != 1 ] && usage
-[ -z "`which jshon`" ] && error 'Please install jshon first.' && exit 1
-[ -z "${INSTALL_DIR}" ] && INSTALL_DIR="/usr/local/${PKG}"
-
-install
-echo $1 > /etc/${EXE}rc
-
-if [ -f "${INSTALL_DIR}/$EXE" ]; then
-    echo ""
-    echo "Done!"
+if [ $# -eq 1 ];then
+    body=$(json "Player.SetRepeat" "\"playerid\":0, \"repeat\":\"$1\"")
+    resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
+    echo $resp|jshon -e result
 else
-    echo >&2 ""
-    echo >&2 "Something went wrong. ${INSTALL_DIR}/$EXE not found"
-    echo >&2 ""
-    exit 1
+    body=$(json "Player.GetProperties" "\"playerid\":0, \"properties\":[\"repeat\"]")
+    resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
+    echo $resp|jshon -e result|jshon -e repeat
 fi
 
-spopd
