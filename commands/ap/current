@@ -90,5 +90,5 @@ json(){
 
 body=$(json "Player.GetItem" "\"playerid\":0")
 resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
-echo $resp|jshon -e result
+echo $resp|jshon -e result|jshon|jshon -e item|jshon -e label|sed 's/"//g'
 
