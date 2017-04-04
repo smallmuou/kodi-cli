@@ -80,8 +80,6 @@ shift $(($OPTIND - 1))
 
 host=`cat /etc/kodirc`
 
-[ $# != 1 ] && usage
-
 # method params
 json(){
     method=$1
