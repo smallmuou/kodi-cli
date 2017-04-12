@@ -14,12 +14,12 @@ sudo ./install.sh
 ## 使用
 
 ```
-starnet:kodi-cli $ kodi -h
-usage:  kodi [OPTIONS] COMMAND [--help]
+starnet:kodi-cli $ kd -h
+usage:  kd [OPTIONS] COMMAND [--help]
     
     OPTIONS:
         -h show this help message and exit 
-        -u uninstall kodi-cli 
+        -u uninstall kd-cli 
 
     COMMANDS:
         ap current
