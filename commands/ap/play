@@ -88,8 +88,8 @@ json(){
     echo "{\"jsonrpc\":\"2.0\", \"method\":\"$1\", \"params\":{$params}, \"id\":1}"
 }
 
-if [ -z "`kodi ap current`" ];then
-    kodi ap open
+if [ -z "`kd ap current`" ];then
+    kd ap open
 else
     body=$(json "Player.PlayPause" "\"playerid\":0, \"play\":true")
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
