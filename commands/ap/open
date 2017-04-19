@@ -95,7 +95,7 @@ if [ $# -eq 1 ];then
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
     echo $resp|jshon -e result
 else 
-    body=$(json "Player.Open" "\"item\":{\"playlistid\":0}")
+    body=$(json "Player.Open" "\"item\":{\"playlistid\":1}")
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
     echo $resp|jshon -e result
 fi

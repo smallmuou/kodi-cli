@@ -89,11 +89,11 @@ json(){
 }
 
 if [ $# -eq 1 ];then
-    body=$(json "Player.SetShuffle" "\"playerid\":0, \"shuffle\":$1")
+    body=$(json "Player.SetShuffle" "\"playerid\":1, \"shuffle\":$1")
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
     echo $resp|jshon -e result
 else
-    body=$(json "Player.GetProperties" "\"playerid\":0, \"properties\":[\"shuffled\"]")
+    body=$(json "Player.GetProperties" "\"playerid\":1, \"properties\":[\"shuffled\"]")
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
     echo $resp|jshon -e result|jshon -e shuffled
 fi

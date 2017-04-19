@@ -91,7 +91,7 @@ json(){
 if [ -z "`kd ap current`" ];then
     kd ap open
 else
-    body=$(json "Player.PlayPause" "\"playerid\":0, \"play\":true")
+    body=$(json "Player.PlayPause" "\"playerid\":1, \"play\":true")
     resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
     echo $resp|jshon -e result
 fi

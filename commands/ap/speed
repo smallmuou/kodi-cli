@@ -88,7 +88,7 @@ json(){
     echo "{\"jsonrpc\":\"2.0\", \"method\":\"$1\", \"params\":{$params}, \"id\":1}"
 }
 
-body=$(json "Player.GetProperties" "\"playerid\":0, \"properties\":[\"speed\"]")
+body=$(json "Player.GetProperties" "\"playerid\":1, \"properties\":[\"speed\"]")
 resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
 echo $resp|jshon -e result|jshon -e speed
 

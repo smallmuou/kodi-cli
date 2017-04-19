@@ -92,7 +92,7 @@ json(){
 
 file=$1
 
-body=$(json "Playlist.Add" "\"playlistid\":0, \"item\":{\"file\":\"$file\"}")
+body=$(json "Playlist.Add" "\"playlistid\":1, \"item\":{\"file\":\"$file\"}")
 resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
 echo $resp|jshon -e result
 

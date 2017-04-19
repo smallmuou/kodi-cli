@@ -90,7 +90,7 @@ json(){
     echo "{\"jsonrpc\":\"2.0\", \"method\":\"$1\", \"params\":{$params}, \"id\":1}"
 }
 
-body=$(json "Player.GoTo" "\"playerid\":0,\"to\":\"previous\"")
+body=$(json "Player.GoTo" "\"playerid\":1,\"to\":\"previous\"")
 resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
 echo $resp|jshon -e result
 
