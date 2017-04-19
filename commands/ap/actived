@@ -58,7 +58,7 @@ USAGE: $(basename $0) [-h]
 
 DESCRIPTION:
 
-Play song.
+Get speed of audio player, 0 means pause, 1 means playing.
 
 OPTIONS:
     -h                Show this help message and exit
@@ -88,10 +88,10 @@ json(){
     echo "{\"jsonrpc\":\"2.0\", \"method\":\"$1\", \"params\":{$params}, \"id\":1}"
 }
 
-playerid=`kd ap actived`
-[ -z "$playerid" ] && exit 1
-
-body=$(json "Player.Stop" "\"playerid\":$playerid")
+body=$(json "Player.GetActivePlayers")
 resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
-echo $resp|jshon -e result
+result=`echo $resp|jshon -e result`
+if [ "$result" != "[]" ];then
+    echo $result|jshon -e 0|jshon -e playerid
+fi
 
