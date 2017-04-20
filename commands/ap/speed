@@ -89,7 +89,10 @@ json(){
 }
 
 playerid=`kd ap actived`
-[ -z "$playerid" ] && exit 1
+if [ -z "$playerid" ];then 
+    echo 0
+    exit 1
+fi
 
 body=$(json "Player.GetProperties" "\"playerid\":$playerid, \"properties\":[\"speed\"]")
 resp=`curl -s -X POST -H 'content-type:application/json' --data "$body" http://$host/jsonrpc`
